@@ -1,0 +1,1065 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2563EB">
+  <title>Monthly Budget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563EB'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='Arial'%3E%24%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+  <div class="app">
+
+    <aside>
+
+      <div class="sidebar-top-bar">
+        <button id="toggleSidebar" class="sidebar-collapse-btn app-tooltip-trigger" type="button">
+          <svg id="iconPanel" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="16" height="16" rx="2.5" />
+            <line x1="7" y1="2" x2="7" y2="18" />
+          </svg>
+          <svg id="iconHamburger" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+            stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <line x1="3" y1="5" x2="17" y2="5" />
+            <line x1="3" y1="10" x2="17" y2="10" />
+            <line x1="3" y1="15" x2="17" y2="15" />
+          </svg>
+          <span class="app-tooltip">Toggle Menu</span>
+        </button>
+        <div class="sidebar-top-bar-actions sidebar-history">
+          <button class="history-btn app-tooltip-trigger" id="undoBtn" type="button">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="16" y1="10" x2="4" y2="10" />
+              <polyline points="8 6 4 10 8 14" />
+            </svg>
+            <span class="app-tooltip">Undo</span>
+          </button>
+          <button class="history-btn app-tooltip-trigger" id="redoBtn" type="button">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="10" x2="16" y2="10" />
+              <polyline points="12 6 16 10 12 14" />
+            </svg>
+            <span class="app-tooltip">Redo</span>
+          </button>
+        </div>
+        <button id="mobileCloseBtn" class="modal-close-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="4" x2="16" y2="16" />
+            <line x1="16" y1="4" x2="4" y2="16" />
+          </svg>
+        </button>
+      </div>
+      <div class="sidebar-main">
+
+        <div class="mini-calendar" id="miniCalendar"></div>
+
+        <nav class="sidebar-nav">
+
+          
+
+          <div class="menu-group">
+            <div class="menu-heading bills">TRANSACTIONS</div>
+            <button data-section="calendar" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="16" height="13" rx="2" />
+                <line x1="2" y1="9" x2="18" y2="9" />
+                <line x1="7" y1="3" x2="7" y2="7" />
+                <line x1="13" y1="3" x2="13" y2="7" />
+                <rect x="5" y="12" width="2.5" height="2.5" rx="0.5" fill="currentColor" stroke="none" />
+                <rect x="10" y="12" width="2.5" height="2.5" rx="0.5" fill="currentColor" stroke="none" />
+              </svg>
+              <span class="menu-label">Calendar</span>
+              <span class="app-tooltip">Calendar</span>
+            </button>
+            <button data-section="list" class="menu-link active app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="2" width="14" height="16" rx="2.5" />
+                <line x1="7" y1="7" x2="13" y2="7" />
+                <line x1="7" y1="10.5" x2="13" y2="10.5" />
+                <line x1="7" y1="14" x2="11" y2="14" />
+              </svg>
+              <span class="menu-label">Transaction List</span>
+              <span class="app-tooltip">Transaction List</span>
+            </button>
+            <button data-section="add" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round">
+                <circle cx="10" cy="10" r="8" />
+                <line x1="10" y1="6.5" x2="10" y2="13.5" />
+                <line x1="6.5" y1="10" x2="13.5" y2="10" />
+              </svg>
+              <span class="menu-label">Add Transaction</span>
+              <span class="app-tooltip">Add Transaction</span>
+            </button>
+          </div>
+
+          <div class="menu-group">
+            <div class="menu-heading dashboard">DASHBOARD</div>
+            <button data-section="monthly" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="12" width="4" height="6" rx="1" />
+                <rect x="8" y="8" width="4" height="10" rx="1" />
+                <rect x="14" y="4" width="4" height="14" rx="1" />
+              </svg>
+              <span class="menu-label">Monthly Insights</span>
+              <span class="app-tooltip">Monthly Insights</span>
+            </button>
+            <button data-section="yearly" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="2,16 6,10 11,13 18,4" />
+                <circle cx="18" cy="4" r="2" fill="currentColor" stroke="none" />
+              </svg>
+              <span class="menu-label">Yearly Overview</span>
+              <span class="app-tooltip">Yearly Overview</span>
+            </button>
+          </div>
+
+          <div class="menu-group">
+            <div class="menu-heading setup">SETUP</div>
+            <button data-section="quickstart" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 17 L10 14.5 L16 17 L16 5 L10 7.5 L4 5 Z" />
+                <line x1="10" y1="7.5" x2="10" y2="14.5" />
+              </svg>
+              <span class="menu-label">Quick Start Guide</span>
+              <span class="app-tooltip">Quick Start Guide</span>
+            </button>
+            <button data-section="settings" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="10" r="3" />
+                <path
+                  d="M10 2.5 L11.2 4.8 L13.8 4 L14.5 6.5 L17 7.5 L15.8 10 L17 12.5 L14.5 13.5 L13.8 16 L11.2 15.2 L10 17.5 L8.8 15.2 L6.2 16 L5.5 13.5 L3 12.5 L4.2 10 L3 7.5 L5.5 6.5 L6.2 4 L8.8 4.8 Z" />
+              </svg>
+              <span class="menu-label">Settings</span>
+              <span class="app-tooltip">Settings</span>
+            </button>
+            <button data-section="backup" class="menu-link app-tooltip-trigger">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="14" width="14" height="4" rx="1.5" />
+                <line x1="10" y1="2" x2="10" y2="13" />
+                <polyline points="6,9 10,14 14,9" />
+              </svg>
+              <span class="menu-label">Backup</span>
+              <span class="app-tooltip">Backup</span>
+            </button>
+            <button class="menu-link app-tooltip-trigger" onclick="showActivationModal()" id="menuActivation" style="display:none;">
+              <svg class="menu-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="10" width="10" height="8" rx="1.5" />
+                <path d="M7 10V7a3 3 0 0 1 6 0" />
+              </svg>
+              <span class="menu-label">Unlock Full Version</span>
+              <span class="app-tooltip">Unlock Full Version</span>
+            </button>
+          </div>
+
+        </nav>
+      </div>
+      <div class="sidebar-version" id="appVersion"></div>
+    </aside>
+
+    <main>
+
+      <div class="topbar">
+        <div>
+          <button id="mobileMenuBtn" class="mobile-menu-btn">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="5" x2="17" y2="5" />
+              <line x1="3" y1="10" x2="17" y2="10" />
+              <line x1="3" y1="15" x2="17" y2="15" />
+            </svg>
+          </button>
+          <div class="mobile-title-row">
+            <div class="title-wrap">
+              <h1 id="pageTitle">Transaction List</h1>
+              <div id="calendarFilterLabel"></div>
+            </div>
+          </div>
+        </div>
+        <div class="topbar-right"></div>
+        <div class="page-header" id="pageHeader">
+          <div class="summary-grid-wrap">
+            <div class="summary-grid-top">
+              <button class="summary-scroll-btn left hidden" id="summaryArrowLeft">‹</button>
+              <div class="summary-grid" id="summaryGrid"></div>
+              <button class="summary-scroll-btn right" id="summaryArrowRight">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section id="section-list" class="section active">
+        <div class="panel">
+          <div class="filters-bar">
+            <div class="filters-left">
+              <span class="row-label">
+                <span class="help-icon" data-help-title="Filters"
+                  data-help="Use filters to narrow down your transactions by status, priority, category, month or year.">🎛️</span>
+                Filters:
+              </span>
+              <div class="filters-all-row" id="filtersAllRow">
+                <button class="filter-pill active" id="filterAll">All</button>
+                <select id="filterStatus" class="filter-pill-select">
+                  <option value="">Status</option>
+                  <option value="unpaid">Planned</option>
+                  <option value="paid">Done</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+                <select id="filterPriority" class="filter-pill-select">
+                  <option value="">Priority</option>
+                </select>
+                <select id="filterCategory" class="filter-pill-select">
+                  <option value="">Category</option>
+                </select>
+                <select id="filterMonth" class="filter-pill-select">
+                  <option value="">Month</option>
+                </select>
+                <select id="filterYear" class="filter-pill-select">
+                  <option value="">Year</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn add-bill-btn" id="addBillBtn">+ Add Transaction</button>
+          </div>
+
+          <div class="filters-mobile-bar" id="filtersMobileBar">
+            <button class="filters-mobile-toggle" id="filtersToggleBtn">
+              <span class="help-icon" data-help-title="Filters"
+                data-help="Use filters to narrow down your transactions by status, priority, category, month or year.">🎛️</span>
+              Filters
+            </button>
+            <button class="btn add-bill-btn" id="addBillBtnMobile">+ Add Transaction</button>
+          </div>
+
+          <!-- Modal filtre mobil -->
+          <div id="filtersModal" class="filters-modal-overlay" style="display:none;">
+            <div class="filters-modal-box">
+              <div class="filters-modal-header">
+                <span class="row-label">Filters:</span>
+                <button class="modal-close-btn" id="filtersModalClose">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="4" x2="16" y2="16" />
+                    <line x1="16" y1="4" x2="4" y2="16" />
+                  </svg>
+                </button>
+              </div>
+              <div class="filters-modal-body" id="filtersModalBody">
+              </div>
+            </div>
+          </div>
+          <div id="billList" class="bill-list"></div>
+        </div>
+      </section>
+
+      <!-- Delete Recurring Modal -->
+      <div id="deleteRecurringModal" class="modal">
+        <div class="modal-box" style="max-width: 400px; text-align: center;">
+          <div style="position:relative; text-align:center; margin-bottom:8px; padding: 0 32px;">
+            <h3 style="margin:0; color: var(--text-h2); font-size: 20px; font-weight: 600;"><span class="help-icon"
+                data-help-title="Deleting recurring transactions"
+                data-help="&lt;strong&gt;Delete this transaction only&lt;/strong&gt; — removes just this occurrence. The series continues.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Delete entire series&lt;/strong&gt; — removes all unpaid transactions from this series.&lt;br&gt;&lt;br&gt;&lt;p style='background:var(--yellow-soft);padding:10px 14px;border-radius:10px;font-size:13px;'&gt;💡 &lt;strong&gt;Tip:&lt;/strong&gt; To stop a series from a certain date, set an End Date instead.&lt;/p&gt;"
+                style="cursor:pointer; margin-right:6px;">🗑️</span>Delete recurring transaction</h3>
+
+            <button id="closeDeleteRecurringModal" class="modal-close-btn" style="position:absolute; top:0; right:0;">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="4" x2="16" y2="16" />
+                <line x1="16" y1="4" x2="4" y2="16" />
+              </svg>
+            </button>
+          </div>
+          <p style="color: var(--muted); margin: 0 0 24px 0; font-size: 14px;">What would you like to delete?</p>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button id="deleteThisOnly" class="btn">Delete this transaction only</button>
+            <button id="deleteEntireSeries" class="btn">Delete entire series</button>
+            <button id="cancelDeleteRecurring" class="btn soft" style="margin-top: 4px;">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Bill Modal -->
+      <div id="addBillModal" class="modal">
+        <div class="modal-box">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+            <h2 style="margin:0;" id="addBillModalTitle"><span class="help-icon" data-help-title="Adding a transaction"
+                data-help="Add one-time or recurring transactions.&lt;br&gt;&lt;br&gt;Each field has a 💡 icon with more details.&lt;br&gt;&lt;br&gt;&lt;p style='background:var(--yellow-soft);padding:10px 14px;border-radius:10px;font-size:13px;'&gt;💡 &lt;strong&gt;Tip:&lt;/strong&gt; For recurring transactions, also set Frequency and Interval. Use End Date only if the series has a known end.&lt;/p&gt;"
+                style="cursor:pointer; margin-right:6px;">📋</span>Add a transaction</h2>
+
+            <button id="closeAddBillModal" class="modal-close-btn">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="4" x2="16" y2="16" />
+                <line x1="16" y1="4" x2="4" y2="16" />
+              </svg>
+            </button>
+          </div>
+          <form id="billForm" novalidate>
+            <input type="hidden" id="editingId" />
+
+            <div class="form-grid">
+              <label>
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="📁 Category"
+                    data-help="Select the category for this transaction. Categories are managed in the Settings page.">📁</span>Category</span>
+                <select id="billCategory" class="form-select" required></select>
+              </label>
+
+              <label>
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🏷️ Transaction name"
+                    data-help="Select the transaction name from the dropdown. Transaction names are managed in the Settings page.">🏷️</span>Transaction
+                  name</span>
+                <select id="billName" class="form-select" required></select>
+              </label>
+
+              <label>
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🔃 Type"
+                    data-help="Select Payment for regular transactions and expenses. Select Refund for reimbursements or returned payments.">🔃</span>Type</span>
+                <select id="billType" class="form-select" required>
+                  <option value="">Select type</option>
+                  <option value="payment">Payment</option>
+                  <option value="refund">Refund</option>
+                </select>
+              </label>
+
+              <label>
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="💰 Amount"
+                    data-help="Select how important this transaction is. Priority affects the color coding in the Transaction List and Calendar. Priority names can be customized in the Settings page.">💰</span>Amount</span>
+                <div class="amount-input-wrap">
+                  <span class="currency-symbol-overlay" id="billAmountCurrency"></span>
+                  <input id="billAmount" type="number" min="0" step="0.01" placeholder="0.00" onkeydown="if(event.key==='Enter')this.blur()" />
+                </div>
+              </label>
+
+              <label id="billCreditCardWrap" style="display:none;">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="💳 Credit card"
+                    data-help="Select Yes if this transaction was paid with a credit card. These transactions will not be deducted from your available balance.">💳</span>Paid with credit card</span>
+                <select id="billCreditCard" class="form-select">
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </label>
+
+              <label>
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🗓️ Due date"
+                    data-help="Enter the transaction's due date. For recurring transactions, this is the first due date — the recurring series starts from this date. This date is used to organize and calculate expected amounts across all reports.">🗓️</span>Due
+                  date</span>
+                <input id="billDate" type="date" />
+              </label>
+
+              <label id="billPriorityWrap">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🚨 Priority"
+                    data-help="Select how important this transaction is. Priority affects the color coding in the Transaction List and Calendar. Priority names can be customized in the Settings page.">🚨</span>Priority</span>
+                <select id="billPriority" class="form-select" required></select>
+              </label>
+
+              <label id="billPaidAmountWrap" style="display:none;">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="💰 New/Paid Amount"
+                    data-help="Enter a New/Paid Amount if the transaction amount changes or the actual paid amount is different from the planned Amount. This value is used in the app display and future reports while the original Amount stays saved as the planned value." id="paidAmountHelpIcon">💰</span><span id="paidAmountLabel">New/Paid Amount</span></span>
+                <div class="amount-input-wrap">
+                  <span class="currency-symbol-overlay" id="billPaidAmountCurrency"></span>
+                  <input id="billPaidAmount" type="number" min="0" step="0.01" placeholder="0.00" onkeydown="if(event.key==='Enter')this.blur()" />
+                </div>
+              </label>
+
+              <label id="billPaidDateWrap" style="display:none;">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🗓️ New/Paid Date"
+                    data-help="Enter a New/Paid Date if the transaction date changes or the actual payment date is different from the original Due Date. This value is used in the app display, countdowns and future reports while the original Due Date stays saved in the background." id="paidDateHelpIcon">🗓️</span><span id="paidDateLabel">New/Paid Date</span></span>
+                <input id="billPaidDate" type="date" />
+              </label>
+
+              <label id="billFrequencyWrap">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="⏱️ Frequency"
+                    data-help="Select how often this transaction repeats. Choose One-time for a single payment, or Daily, Weekly, Monthly, Yearly for recurring transactions. If you select a recurring frequency, Interval and End Date fields will appear.">⏱️</span>Frequency</span>
+                <select id="billFrequency" class="form-select" required>
+                  <option value="">Select frequency</option>
+                  <option value="one-time">One-time</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="yearly">Yearly</option>
+                </select>
+              </label>
+
+              <label id="billIntervalWrap">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="🔄 Interval"
+                    data-help="Enter a number that sets how often the transaction repeats based on the selected Frequency. 1 = every unit, 2 = every 2 units, and so on. The Due Date is always the starting point.">🔄</span>Interval</span>
+                <input id="billInterval" type="number" min="1" step="1" value="1" onkeydown="if(event.key==='Enter')this.blur()" />
+              </label>
+
+              <label id="billEndDateWrap">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="⌛ End date"
+                    data-help="Enter the date when this recurring transaction should stop. The transaction will repeat from the Due Date until this date (inclusive). Leave empty if the series has no known end — the app will automatically generate occurrences up to one year in advance and generate future occurrences automatically every year.">⌛</span>End
+                  date</span>
+                <input id="billEndDate" type="date" />
+              </label>
+
+              <label class="full-width">
+                <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                    data-help-title="✏️ Notes"
+                    data-help="Add a short note or detail about this transaction. Optional, but useful for reminders or extra transaction details.">✏️</span>Notes
+                  (optional)</span>
+                <textarea id="billNotes" placeholder="Optional note..."></textarea>
+              </label>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="submit" id="saveBillBtn">Save</button>
+              <button class="btn btn-purple" type="button" id="saveAndAddBtn">Save & Add Another</button>
+              <button class="btn btn-green" type="button" id="saveAndPaidBtn">Save & Mark Paid</button>
+              <button class="btn" type="button" id="updateThisOnly"
+                style="display:none; background:var(--peach); color:#fff;">Update this only</button>
+              <button class="btn" type="button" id="updateFromHere"
+                style="display:none; background:var(--orange); color:#fff;">Update from here on</button>
+              <button class="btn soft" type="button" id="cancelEditBtn">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <section id="section-calendar" class="section">
+        <div class="panel">
+          <div class="filters-bar">
+            <div class="filters-left">
+              <span class="row-label">
+                <span class="help-icon" data-help-title="Filters"
+                  data-help="Use filters to narrow down your transactions by status, priority or category.">🎛️</span>
+                Filters:
+              </span>
+              <div class="filters-all-row" id="calFiltersAllRow">
+                <button class="filter-pill active" id="calFilterAll">All</button>
+                <select id="calFilterStatus" class="filter-pill-select">
+                  <option value="">Status</option>
+                  <option value="unpaid">Planned</option>
+                  <option value="paid">Done</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+                <select id="calFilterPriority" class="filter-pill-select">
+                  <option value="">Priority</option>
+                </select>
+                <select id="calFilterCategory" class="filter-pill-select">
+                  <option value="">Category</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn add-bill-btn" id="calAddBillBtn">+ Add Transaction</button>
+          </div>
+
+          <div class="filters-mobile-bar" id="calFiltersMobileBar">
+            <button class="filters-mobile-toggle" id="calFiltersToggleBtn">
+              <span class="help-icon" data-help-title="Filters"
+                data-help="Use filters to narrow down your transactions by status, priority or category.">🎛️</span>
+              Filters
+            </button>
+            <button class="btn add-bill-btn" id="calAddBillBtnMobile">+ Add Transaction</button>
+          </div>
+
+          <div id="calFiltersModal" class="filters-modal-overlay" style="display:none;">
+            <div class="filters-modal-box">
+              <div class="filters-modal-header">
+                <span class="row-label">Filters:</span>
+                <button class="modal-close-btn" id="calFiltersModalClose">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="4" x2="16" y2="16" />
+                    <line x1="16" y1="4" x2="4" y2="16" />
+                  </svg>
+                </button>
+              </div>
+              <div class="filters-modal-body" id="calFiltersModalBody">
+              </div>
+            </div>
+          </div>
+
+          <div class="calendar-controls">
+            <button class="cal-nav-btn" id="prevMonth"><span style="font-size:11px;">❮</span> Prev</button>
+            <div class="calendar-title" id="calendarTitle">
+              <select id="calNavPeriod" class="cal-nav-select filter-pill-select"></select>
+            </div>
+            <button class="cal-nav-btn" id="nextMonth">Next <span style="font-size:11px;">❯</span></button>
+          </div>
+          <div id="calBillModal" class="modal" onclick="if(event.target===this)closeCalBillModal()">
+            <div class="modal-box" style="max-width:420px;">
+              <div id="calBillModalContent"></div>
+            </div>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </div>
+        <div id="calDayPanel" class="cal-day-panel" style="display:none;"></div>
+        <div id="calDrawerOverlay" class="cal-drawer-overlay" onclick="toggleCalDrawer(false)"></div>
+      </section>
+
+      <section id="section-monthly" class="section">
+        <div class="panel">
+          <div id="categoryBreakdown" class="category-grid"></div>
+          <div id="monthlyNotes" class="monthly-notes-wrap"></div>
+        </div>
+      </section>
+
+      <section id="section-yearly" class="section">
+        <div class="panel">
+          <div id="categoryBreakdownYearly" class="category-grid"></div>
+          <div id="yearlyNotes" class="monthly-notes-wrap"></div>
+        </div>
+      </section>
+
+      <section id="section-quickstart" class="section">
+
+        <div class="panel">
+          <h2>👋 Welcome!</h2>
+          <p class="qs-intro">This app helps you manage your income, savings and expenses so you always know where your money goes. Everything is saved locally on your device — simple, fast, no account needed.</p>
+        </div>
+
+        <div class="panel">
+          <h2>🌐 Recommended Browser</h2>
+          <div class="note">
+            This app was built and tested in <strong>Google Chrome</strong>. Recommended browsers: <strong>Chrome or Edge</strong> on Windows, <strong>Chrome</strong> on Android, <strong>Safari</strong> on Mac, iPhone &amp; iPad.
+          </div>
+          <p class="qs-text">Other browsers may work, but some features (such as automatic backup file saving) might not
+            be available.</p>
+        </div>
+
+        <div class="panel">
+          <h2>✨ Help Icons</h2>
+          <p class="qs-text">Throughout the app you'll find small clickable icons like ✨ 🎛️ 📋 💡 💾 next to titles and form fields — tap them anytime for a quick tip. On this page, everything is already written out for you. No icons to tap here — just read through!</p>
+        </div>
+
+        <div class="panel">
+          <h2>💾 Backup & Offline Use</h2>
+          <div class="qs-info-grid">
+            <div class="qs-info-card qs-mint">
+              <div class="qs-info-icon">📱</div>
+              <div>
+                <div class="qs-info-title">Works offline</div>
+                <div class="qs-info-desc">No internet needed. All your data is saved locally on your device.</div>
+              </div>
+            </div>
+            <div class="qs-info-card qs-yellow">
+              <div class="qs-info-icon">📂</div>
+              <div>
+                <div class="qs-info-title">Install or use as a file</div>
+                <div class="qs-info-desc">Install it as an app or open it directly as a local HTML file. No setup required.</div>
+              </div>
+            </div>
+            <div class="qs-info-card qs-purple">
+              <div class="qs-info-icon">🔗</div>
+              <div>
+                <div class="qs-info-title">Multi-device support</div>
+                <div class="qs-info-desc">Use the app on multiple devices by saving your backup to Google Drive or OneDrive — always in sync.</div>
+              </div>
+            </div>
+            <div class="qs-info-card qs-pink">
+              <div class="qs-info-icon">🔒</div>
+              <div>
+                <div class="qs-info-title">Your data, your control</div>
+                <div class="qs-info-desc">No account, no subscription, no cloud required. Your data stays on your device.</div>
+              </div>
+            </div>
+          </div>
+          <p class="qs-text" style="margin-top:14px;">💡 For detailed backup instructions and multi-device setup, check the <strong>Backup</strong> page after finishing this guide.</p>
+        </div>
+
+        <div class="panel">
+          <h2>🗺️ Where to Start</h2>
+          <p class="qs-text">Go through the pages in this order for a smooth start:</p>
+          <div class="qs-steps">
+            <div class="qs-step qs-step-active">
+              <div class="qs-step-num">1</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Quick Start Guide</div>
+                <div class="qs-step-desc">You're here! Read this before anything else.</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">2</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Backup</div>
+                <div class="qs-step-desc">Set up backup so your data is always safe.</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">3</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Settings</div>
+                <div class="qs-step-desc">Choose your currency, week start day, transaction categories and priority levels.
+                </div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">4</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Calendar</div>
+                <div class="qs-step-desc">Add transactions, edit them, mark them as paid — all visually on the calendar.</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">5</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Transaction List</div>
+                <div class="qs-step-desc">See all your transactions sorted chronologically and by priority. Filter and manage quickly.</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">6</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Monthly Insights</div>
+                <div class="qs-step-desc">Monthly overview — income, savings and expenses broken down by category.</div>
+              </div>
+            </div>
+            <div class="qs-step">
+              <div class="qs-step-num">7</div>
+              <div class="qs-step-body">
+                <div class="qs-step-title">Yearly Overview</div>
+                <div class="qs-step-desc">Trends and totals across the full year for a big-picture view.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>▶️ Watch the Tutorial</h2>
+          <p class="qs-text">Prefer to watch instead of read? This short video walks you through the app from start to finish.</p>
+          <a href="https://www.youtube.com/watch?v=JXSX7LNI74Q" target="_blank" class="btn btn-youtube" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-top:8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+
+        <div class="panel">
+          <h2>💬 Need Help?</h2>
+          <p class="qs-text">If you have any questions or run into any issues, don't hesitate to reach out — I'm happy
+            to help!</p>
+          <div class="qs-info-grid">
+            <div class="qs-info-card qs-mint">
+              <div class="qs-info-icon">📧</div>
+              <div>
+                <div class="qs-info-title">Email</div>
+                <div class="qs-info-desc"><a href="mailto:mariannekita@gmail.com">mariannekita@gmail.com</a></div>
+              </div>
+            </div>
+            <div class="qs-info-card qs-yellow">
+              <div class="qs-info-icon">🛍️</div>
+              <div>
+                <div class="qs-info-title">Etsy Shop</div>
+                <div class="qs-info-desc"><a href="https://www.etsy.com/shop/TracklyApp?ref=seller-platform-mcnav" target="_blank">TracklyApp</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="section-settings" class="section">
+        <div class="panel">
+          <h2>
+            <span class="help-icon" data-help-title="Settings"
+              data-help="Customize your app settings, including currency, week start day, custom transaction names and priority level names.">
+              ✨
+            </span>
+            Customize your budget the way you need
+          </h2>
+
+          <div class="form-grid">
+
+            <label>
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                  data-help-title="💱 Currency Symbol"
+                  data-help="Select your preferred currency from the dropdown. If your currency is not listed, use the '+ Add custom currency' option at the bottom of the list.">💱</span>Currency
+                symbol</span>
+              <select id="currencySymbol" class="form-select">
+                <option value="">Add currency</option>
+                <option value="L">Albanian Lek (L)</option>
+                <option value="DZD">Algerian Dinar (DZD)</option>
+                <option value="ƒ">Antillen Guilders (ƒ)</option>
+                <option value="֏">Armenian Dram (֏)</option>
+                <option value="A$">Australian Dollar (A$)</option>
+                <option value="₼">Azerbaijani Manat (₼)</option>
+                <option value="B$">Bahamian Dollar (B$)</option>
+                <option value="$">Barbadian Dollar ($)</option>
+                <option value="R$">Brazilian Real (R$)</option>
+                <option value="£">British Pound (£)</option>
+                <option value="$b">Brunei Dollar ($b)</option>
+                <option value="лв">Bulgarian Lev (лв)</option>
+                <option value="C$">Canadian Dollar (C$)</option>
+                <option value="$">Chilean Peso ($)</option>
+                <option value="¥">Chinese Renminbi (¥)</option>
+                <option value="Col$">Colombian Peso (Col$)</option>
+                <option value="₡">Costa Rican Colón (₡)</option>
+                <option value="kn">Croatian Kuna (kn)</option>
+                <option value="Kč">Czech Koruna (Kč)</option>
+                <option value="kr">Danish Krone (kr)</option>
+                <option value="RD$">Dominican Peso (RD$)</option>
+                <option value="€">Euro (€)</option>
+                <option value="GTQ">Guatemalan Quetzal (GTQ)</option>
+                <option value="$">Hong Kong Dollar ($)</option>
+                <option value="Ft">Hungarian Forint (Ft)</option>
+                <option value="ISK">Iceland Krona (ISK)</option>
+                <option value="₹">Indian Rupee (₹)</option>
+                <option value="Rp">Indonesian Rupiah (Rp)</option>
+                <option value="₪">Israeli Shekel (₪)</option>
+                <option value="J$">Jamaican Dollar (J$)</option>
+                <option value="¥">Japanese Yen (¥)</option>
+                <option value="₸">Kazakhstani Tenge (₸)</option>
+                <option value="KSh">Kenyan Shilling (KSh)</option>
+                <option value="₭">Lao Kip (₭)</option>
+                <option value="ден">Macedonian Denar (ден)</option>
+                <option value="RM">Malaysian Ringgit (RM)</option>
+                <option value="$">Mexican Peso ($)</option>
+                <option value="₮">Mongolian Tugrik (₮)</option>
+                <option value="NZ$">New Zealand Dollar (NZ$)</option>
+                <option value="kr">Norwegian Krone (kr)</option>
+                <option value="Rs">Pakistani Rupee (Rs)</option>
+                <option value="S/">Peruvian Sol (S/)</option>
+                <option value="₱">Philippine Peso (₱)</option>
+                <option value="zł">Polish Zloty (zł)</option>
+                <option value="QR">Qatari Riyal (QR)</option>
+                <option value="RON">Romanian Leu (RON)</option>
+                <option value="SAR">Saudi Riyal (SAR)</option>
+                <option value="RSD">Serbian Dinar (RSD)</option>
+                <option value="S$">Singapore Dollar (S$)</option>
+                <option value="R">South African Rand (R)</option>
+                <option value="₩">South Korean Won (₩)</option>
+                <option value="Rs">Sri Lankan Rupee (Rs)</option>
+                <option value="kr">Swedish Krona (kr)</option>
+                <option value="₣">Swiss Franc (₣)</option>
+                <option value="NT$">New Taiwan Dollar (NT$)</option>
+                <option value="฿">Thai Baht (฿)</option>
+                <option value="TT$">Trinidad & Tobago Dollar (TT$)</option>
+                <option value="₺">Turkish Lira (₺)</option>
+                <option value="UGX">Ugandan Shilling (UGX)</option>
+                <option value="Dhs">UAE Dirham (Dhs)</option>
+                <option value="$|US Dollar">US Dollar ($)</option>
+                <option value="đ">Vietnamese Dong (đ)</option>
+                <option value="Z$">Zimbabwe Dollar (Z$)</option>
+                <option value="__add_custom__">+ Add custom currency</option>
+              </select>
+            </label>
+
+            <label>
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                  data-help-title="🔀 Currency Position"
+                  data-help="Choose where the currency symbol appears — before or after the amount. For example: $500 or 500$.">🔀</span>Currency
+                position</span>
+              <select id="currencyPosition" class="form-select">
+                <option value="">Choose position</option>
+                <option value="before">Before amount</option>
+                <option value="after">After amount</option>
+              </select>
+            </label>
+
+            <label>
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                  data-help-title="📅 Week Start"
+                  data-help="Choose which day your week starts on — Sunday or Monday. This affects how the calendar and weekly views are displayed.">📅</span>Week
+                start</span>
+              <select id="weekStart" class="form-select">
+                <option value="">Choose week start</option>
+                <option value="sunday">Sunday</option>
+                <option value="monday">Monday</option>
+              </select>
+            </label>
+
+            <label class="full-width">
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                  data-help-title="🏷️ Transaction Categories & Names"
+                  data-help="Customize your category names and add your own transaction names under each one. Categories can be renamed to fit your needs. Add transaction names like: Salary, Netflix, Electricity, Car Loan, Credit Card. The category color stays the same even if you rename it.">🏷️</span>Add
+                your transaction names</span>
+
+              <div class="bill-names-grid">
+                <div class="bill-names-column">
+                  <input class="bill-names-title bill-names-title-input" value="INCOME" readonly />
+                  <div class="bill-names-list"></div>
+                  <button class="bill-name-input btn soft">+ Add</button>
+                </div>
+
+                <div class="bill-names-column">
+                  <input class="bill-names-title bill-names-title-input" value="SAVINGS" readonly />
+                  <div class="bill-names-list"></div>
+                  <button class="bill-name-input btn soft">+ Add</button>
+                </div>
+
+                <div class="bill-names-column">
+                  <input class="bill-names-title bill-names-title-input" value="BILLS" readonly />
+                  <div class="bill-names-list"></div>
+                  <button class="bill-name-input btn soft">+ Add</button>
+                </div>
+
+                <div class="bill-names-column">
+                  <input class="bill-names-title bill-names-title-input" value="EXPENSES" readonly />
+                  <div class="bill-names-list"></div>
+                  <button class="bill-name-input btn soft">+ Add</button>
+                </div>
+
+                <div class="bill-names-column">
+                  <input class="bill-names-title bill-names-title-input" value="DEBT PAYMENTS" readonly />
+                  <div class="bill-names-list"></div>
+                  <button class="bill-name-input btn soft">+ Add</button>
+                </div>
+              </div>
+            </label>
+
+
+            <label class="full-width">
+              <span style="display:inline-flex; align-items:center; gap:4px;"><span class="help-icon"
+                  data-help-title="📌 Priority Level Names"
+                  data-help="These are the priority levels used to organize your transactions. You can rename them to anything you prefer — for example: Urgent, High, Medium, Low, Optional or Personal, Work, Family. Their preset colors stay the same regardless of the name you choose.">🎯</span>Add
+                your priority level names</span>
+              <div class="priority-names-grid">
+                <div class="priority-card">
+                  <div class="priority-label">Priority 1</div>
+                  <input class="priority-name-input" type="text" value="Urgent" />
+                </div>
+                <div class="priority-card">
+                  <div class="priority-label">Priority 2</div>
+                  <input class="priority-name-input" type="text" value="High" />
+                </div>
+                <div class="priority-card">
+                  <div class="priority-label">Priority 3</div>
+                  <input class="priority-name-input" type="text" value="Medium" />
+                </div>
+                <div class="priority-card">
+                  <div class="priority-label">Priority 4</div>
+                  <input class="priority-name-input" type="text" value="Low" />
+                </div>
+                <div class="priority-card">
+                  <div class="priority-label">Priority 5</div>
+                  <input class="priority-name-input" type="text" value="Optional" />
+                </div>
+              </div>
+            </label>
+
+            </label>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="section-backup" class="section">
+        <div class="panel">
+          <h2><span class="help-icon" data-help-title="How Backup Works"
+              data-help="<p>Your data is stored <strong>only in this browser</strong> on this device — not in the cloud.</p><p><strong>💾 Export JSON Backup:</strong><br>Save a copy of all your data as a JSON file. Do this regularly to keep your data safe.</p><p><strong>📥 Import JSON Backup:</strong><br>Restore your data from a previously exported JSON file.</p><p><strong>📊 Export CSV:</strong><br>Export your transactions as a spreadsheet for use in Excel or Google Sheets.</p><p style='background:var(--yellow-soft);padding:10px 14px;border-radius:10px;font-size:13px;'>💡 <strong>Tip:</strong> For the safest experience — export a backup every time you finish using the app, and import it when you open it again. This ensures your data is always up to date, especially if you use the app on multiple devices or browsers.</p>"
+              style="cursor:pointer; margin-right:6px;">💾</span>Backup & restore your data</h2>
+
+          <div class="backup-grid">
+
+            <button class="btn secondary" id="exportJson">
+              Export JSON Backup
+            </button>
+
+            <button class="btn secondary" id="importLatestBackup" type="button">
+              Import JSON Backup
+            </button>
+
+            <input id="importJson" type="file" accept="application/json" style="display:none;" />
+
+            <button class="btn soft" id="exportCsv">
+              Export CSV
+            </button>
+
+            <button class="btn danger" id="clearAll">
+              Clear All Data
+            </button>
+
+          </div>
+
+          <div id="autoBackupSection">
+            <h2 style="margin-top:24px;"><span class="help-icon" data-help-title="How Automatic Backup Works" data-help="<p>Automatic backup saves your data to a folder on your computer every time you make a change — no action needed.</p><p><strong>✅ Supported browsers:</strong> Google Chrome and Microsoft Edge on desktop.</p><p><strong>❌ Not supported:</strong> Safari, Firefox, or any mobile browser.</p><p><strong>How to set it up:</strong><br>Click <strong>Choose Backup Location</strong>, select a folder on your computer, and you're done. Every change is saved automatically from that point on.When you reopen the app, you'll be prompted to import the latest backup with one click.</p><p style='background:var(--yellow-soft);padding:10px 14px;border-radius:10px;font-size:13px;'>💡 <strong>Tip:</strong> Choose a folder that is synced to Google Drive or OneDrive for extra safety.</p>" style="cursor:pointer; margin-right:0px;">⚡</span>Automatic Backup</h2>
+            <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">Available in <strong>Chrome</strong> and <strong>Edge</strong> on desktop. Choose a folder once — your data saves automatically after every change.</p>
+
+            <div class="backup-grid">
+              <div class="backup-file-display" id="backupFileName">
+                No backup folder selected. Choose a backup location.
+              </div>
+
+              <div class="backup-location-actions">
+                <button class="btn peach" id="changeBackupLocation" onclick="chooseBackupDirectory()">
+                  Choose Backup Location
+                </button>
+
+                <button class="btn orange" id="removeBackupLocation" onclick="removeBackupLocation()">
+                  Remove Backup Location
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:0;">
+          <button class="backup-guide-toggle" id="backupGuideToggle" onclick="toggleBackupGuide()">
+            <span>🌐 Using the App Across Multiple Devices</span>
+            <svg class="backup-guide-chevron" id="backupGuideChevron" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="5 8 10 13 15 8"/>
+            </svg>
+          </button>
+          <div class="backup-guide-body" id="backupGuideBody" style="display:none;">
+            <div class="note" style="margin-top:14px;">
+              Your app data is stored locally in your browser on each device. Because browser storage is not permanent, we strongly recommend creating regular backups to keep your data safe.
+              <br><br>
+              To use the app across multiple devices, save your backups to Google Drive, OneDrive, or iCloud Drive. This makes importing and exporting between devices much faster.
+              <br><br>
+              💡 We recommend <strong>Google Drive</strong> — it works well across Windows, Mac, Android, and iPhone.
+            </div>
+
+            <h2 style="margin-top:18px;">🖥️ Computer Setup</h2>
+            <ol class="backup-guide-list">
+              <li>Install Google Drive or OneDrive on your computer and sign in</li>
+              <li>Wait for the Google Drive or OneDrive folder to appear in your file manager</li>
+              <li>In the app, go to Backup → Automatic Backup → Choose Backup Location</li>
+              <li>Select a folder inside your Google Drive or OneDrive</li>
+              <li>Your backups will now save automatically and sync to your other devices</li>
+            </ol>
+
+            <h2 style="margin-top:18px;">📱 Phone &amp; Tablet Setup</h2>
+            <ol class="backup-guide-list">
+              <li>Install the same cloud storage app on your phone or tablet and sign in with the same account</li>
+              <li>Open the app and find your backup folder</li>
+              <li>Make the folder available offline so it syncs automatically</li>
+              <li>In Simple Budget App, go to Backup → Import JSON Backup</li>
+              <li>Select the latest backup file from your cloud folder</li>
+            </ol>
+
+            <div class="note" style="margin-top:14px; margin-bottom:0;">
+              💡 Before switching devices, make sure your latest backup was saved on the device you used last.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="welcomeBackupModal" class="modal">
+        <div class="modal-box">
+          <h2>✨ Welcome back</h2>
+
+          <p>
+            Start with your latest backup and pick up right where you left off
+          </p>
+
+          <div class="actions backup-reminder-actions">
+            <button class="btn secondary" id="welcomeImportBackupBtn">
+              Import Backup
+            </button>
+
+            <button class="btn" id="closeWelcomeBackup">
+              Continue to App
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="backupReminderModal" class="modal">
+        <div class="modal-box">
+          <h2> ✨ Backup your latest changes before you go</h2>
+
+          <div class="actions backup-reminder-actions">
+            <button class="btn secondary" id="backupNowBtn">
+              Export Backup Now
+            </button>
+
+            <button class="btn" id="closeBackupReminder">
+              Skip Backup
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="helpModal" class="modal">
+        <div class="modal-box">
+          <div style="position:relative; margin-bottom:14px;">
+            <h2 id="helpModalTitle" style="margin:0;">Quick Help</h2>
+            <button id="closeHelpModalX" class="modal-close-btn" style="position:absolute; top:0; right:0;">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="4" x2="16" y2="16" />
+                <line x1="16" y1="4" x2="4" y2="16" />
+              </svg>
+            </button>
+          </div>
+          <div id="helpModalText"></div>
+          <div class="actions">
+            <button class="btn soft" id="closeHelpModal">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="currencyModal" class="modal">
+        <div class="modal-box">
+          <h2>Add custom currency</h2>
+
+          <label>
+            Currency name
+            <input id="customCurrencyName" type="text" placeholder="Example: Bitcoin" />
+          </label>
+
+          <label>
+            Currency symbol
+            <input id="customCurrencySymbol" type="text" placeholder="Example: BTC" />
+            <p id="currencyError" class="modal-error"></p>
+          </label>
+
+          <div class="actions">
+            <button class="btn" id="addCustomCurrency">Add Currency</button>
+            <button class="btn soft" id="closeCurrencyModal">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <script src="version.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+
+<div class="modal" id="activationModal">
+    <div class="modal-box" style="max-width:400px;">
+        <div class="modal-header">
+            <span>🔓 Unlock Full Version</span>
+        </div>
+        <div class="modal-body">
+            <p style="margin-bottom:16px; color:var(--muted); font-size:14px;">You've reached the 2-transaction limit of the demo. Enter your activation code to unlock unlimited transactions.</p>
+            <input id="activationCodeInput" type="text" class="form-input" placeholder="Enter activation code" autocomplete="off" style="width:100%; margin-bottom:8px;">
+            <div id="activationError" style="display:none; color:var(--red); font-size:13px; margin-bottom:8px;">Invalid code. Please try again.</div>
+        </div>
+        <div class="actions">
+            <button class="btn soft" onclick="closeActivationModal()">Cancel</button>
+            <button class="btn primary" onclick="submitActivationCode()">Activate</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+﻿{
+  "name": "Monthly Budget",
+  "short_name": "Monthly Budget",
+  "description": "Track your income, savings and expenses easily",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fdf5f9",
+  "theme_color": "#fe7aa7",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
