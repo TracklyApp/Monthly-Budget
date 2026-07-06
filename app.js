@@ -1477,7 +1477,8 @@ function renderCategoryOptions() {
 
 function renderBillNameOptions() {
     const selectedCategory = els.billCategory.value;
-    const group = data.billNameGroups.find(group => group.title === selectedCategory);
+    const group = data.billNameGroups.find(group => group.title === selectedCategory)
+        || defaultData.billNameGroups.find(group => group.title === selectedCategory);
     const names = group?.names || [];
 
     if (!selectedCategory) {
@@ -3000,7 +3001,7 @@ function renderCalendar() {
             `);
         } else {
             cells.push(`
-              <div class="day${isToday ? " today" : ""}${isWeekend ? " weekend" : ""}" data-date="${dateString}" onclick="if(!event.target.closest('.cal-bill'))openAddBillWithDate('${dateString}')">
+              <div class="day${isToday ? " today" : ""}${isWeekend ? " weekend" : ""}" data-date="${dateString}" ondblclick="openAddBillWithDate('${dateString}')">
                 <div class="day-number">${day}</div>
                 ${bills.map(bill => {
                 const status = getBillStatus(bill);
@@ -3038,11 +3039,22 @@ function renderCalendar() {
         let longPressFired = false;
         els.calendarGrid.querySelectorAll(".day[data-date]").forEach(cell => {
             const dateString = cell.dataset.date;
+            cell.addEventListener("touchstart", e => {
+                longPressFired = false;
+                longPressTimer = setTimeout(() => {
+                    longPressTimer = null;
+                    longPressFired = true;
+                    e.preventDefault();
+                    openAddBillWithDate(dateString);
+                }, 500);
+            }, { passive: false });
             cell.addEventListener("touchend", e => {
-                if (e.target.closest(".cal-bill")) return;
-                e.preventDefault();
+                if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+                if (longPressFired) { longPressFired = false; return; }
                 selectCalDay(dateString);
-                openAddBillWithDate(dateString);
+            });
+            cell.addEventListener("touchmove", () => {
+                if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
             });
         });
     } else {
